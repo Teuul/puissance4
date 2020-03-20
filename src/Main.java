@@ -5,7 +5,7 @@ class Main {
 		Plateau P = new Plateau(6, 7);
 		P.setSize(600, 400);
 		P.setVisible(true);
-		int winner = -1;
+		/*int winner = -1;
 		while (winner != 1 && winner != 2) {
 			P.imprime();
 			String input;
@@ -17,7 +17,7 @@ class Main {
 			} catch (ErrGagne e) {
 				System.out.println("Le jeu continue.");
 			}
-		}
+		}*/
 		P.imprime();
 	}
 }

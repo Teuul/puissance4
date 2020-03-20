@@ -9,7 +9,11 @@ class Plateau extends JFrame{
 		tour = 1;
 		background = new JPanel();
 		background.setPreferredSize(new Dimension(600,400));
-		background.setLayout(new GridLayout(n,m));
+		background.setLayout(new GridLayout(n+1,m));
+		// ajouter une ligne pour les boutons JOUER
+		for(int k =0;k<m;k++){
+			background.add(new bouttonJoue(k,this));
+		}
 		background.setBackground(Color.DARK_GRAY);
 		tab = new Case[n][m];
 		getContentPane().add(background);
