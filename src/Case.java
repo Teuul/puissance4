@@ -31,5 +31,14 @@ public class Case extends JPanel {
             paintComponent(getGraphics(),Color.LIGHT_GRAY);
     }
 
+    public void setColorDescente(int color){
+        if(color == 1)
+            paintComponent(getGraphics(),Color.RED);
+        else if (color == 2)
+            paintComponent(getGraphics(),Color.YELLOW);
+        else
+            paintComponent(getGraphics(),Color.LIGHT_GRAY);
+    }
+
     int color;  // 0:vide ; 1:rouge ; 2:jaune
 }

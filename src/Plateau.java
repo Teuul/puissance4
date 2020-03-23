@@ -21,6 +21,8 @@ class Plateau extends JFrame{
 		c.weighty = 1;
 
 		background.add(gamePane,c);
+		c.weightx = 0.25;
+		c.weighty = 1;
 		background.add(menuPane,c);
 
 		// Menu
@@ -28,8 +30,9 @@ class Plateau extends JFrame{
 		menuPane.setLayout(new GridLayout(2,1));
 		menuPane.setBackground(Color.ORANGE);
 		// quit button
-		JButton quitButton = new JButton();
-		quitButton.setBackground(Color.RED);
+		JButton quitButton = new JButton("Quit");
+		quitButton.setBackground(Color.BLACK);
+		quitButton.setForeground(Color.WHITE);
 		quitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -80,6 +83,9 @@ class Plateau extends JFrame{
 			iter-=1;
 		}
 		if(iter>=0) {
+			// descente du jeton
+			Descente d = new Descente(iter,j,tab,n,tour);
+			d.run();
 			tab[iter][j].setColor(tour);
 			this.lastX = j;
 			this.lastY = iter;

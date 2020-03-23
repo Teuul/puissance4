@@ -8,14 +8,12 @@ import java.awt.event.ActionListener;
 public class newGameButton extends JButton {
     public newGameButton(Plateau P){
         this.P = P;
-        setBackground(Color.GREEN);
+        setBackground(Color.WHITE);
+        setText("New game");
 
         addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /*System.out.println("New game ordered");
-                newGame();
-                System.out.println("Order executed");*/
                 newGame();
             }
         });
