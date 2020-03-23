@@ -1,0 +1,37 @@
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class newGameButton extends JButton {
+    public newGameButton(Plateau P){
+        this.P = P;
+        setBackground(Color.GREEN);
+
+        addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                /*System.out.println("New game ordered");
+                newGame();
+                System.out.println("Order executed");*/
+                newGame();
+            }
+        });
+    }
+
+    public void newGame(){
+        System.out.println("--new game--");
+        for(int i = 0;i<P.n;i++){
+            for(int j = 0;j<P.m;j++){
+                P.tab[i][j].setColor(0);
+            }
+        }
+        for(int k = 0;k<P.m;k++){
+            P.playingButtons[k].setPlayable(true);
+        }
+    }
+
+    Plateau P;
+}

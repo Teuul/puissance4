@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 class Plateau extends JFrame{
 	
@@ -8,24 +10,56 @@ class Plateau extends JFrame{
 		this.m = m;
 		tour = 1;
 		background = new JPanel();
-		background.setPreferredSize(new Dimension(600,400));
-		background.setLayout(new GridLayout(n+1,m));
-		// ajouter une ligne pour les boutons JOUER
+		gamePane = new JPanel();
+		menuPane = new JPanel();
+
+		background.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		c.weightx = 1;
+		c.weighty = 1;
+
+		background.add(gamePane,c);
+		background.add(menuPane,c);
+
+		// Menu
+		menuPane.setPreferredSize(new Dimension(100,50));
+		menuPane.setLayout(new GridLayout(2,1));
+		menuPane.setBackground(Color.ORANGE);
+		// quit button
+		JButton quitButton = new JButton();
+		quitButton.setBackground(Color.RED);
+		quitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(1);
+			}
+		});
+		menuPane.add(quitButton);
+		// restart button
+		JButton restartButton = new newGameButton(this);
+		menuPane.add(restartButton);
+
+		gamePane.setPreferredSize(new Dimension(450,300));
+		gamePane.setLayout(new GridLayout(n+1,m));
+		playingButtons = new bouttonJoue[m];
 		for(int k =0;k<m;k++){
-			background.add(new bouttonJoue(k,this));
+			playingButtons[k] = new bouttonJoue(k,this);
+			gamePane.add(playingButtons[k]);
 		}
-		background.setBackground(Color.DARK_GRAY);
+		gamePane.setBackground(Color.DARK_GRAY);
 		tab = new Case[n][m];
 		getContentPane().add(background);
 		for(int i=0;i<n;i++) {
 			for (int j = 0; j < m; j++) {
 				tab[i][j] = new Case();
-				background.add(tab[i][j]);
+				gamePane.add(tab[i][j]);
 			}
 		}
 	}
 
-	void imprime(){
+	void imprime(){		// Imprime le plateau dans la console
 		for(int i=0;i<n;i++){
 			System.out.print("|");
 			for(int j=0;j<m;j++){
@@ -41,7 +75,7 @@ class Plateau extends JFrame{
 	}
 
 	int joue(int j) throws ErrGagne{
-		int iter = 5;
+		int iter = n-1;
 		while(iter>=0 && tab[iter][j].getColor()!=0){
 			iter-=1;
 		}
@@ -55,6 +89,9 @@ class Plateau extends JFrame{
 			else
 				this.tour = 1;
 			System.out.println("Joueur " + gagne(test_winner) + " a gagné !");
+			for(int k = 0;k<m;k++){
+				playingButtons[k].setPlayable(false);
+			}
 			return test_winner;
 		}
 		return -1;
@@ -66,7 +103,6 @@ class Plateau extends JFrame{
 		int c= 0;
 		for(i=-3;i<=3;i++){
 			c = compte(lastX+i,lastY,c,joueur);
-			//System.out.println("DIRECTION 1["+(lastX+i)+","+lastY+"]="+getCase(lastX+i,lastY)+"|c="+c);
 			if(c==4)
 				break;
 		}
@@ -77,7 +113,6 @@ class Plateau extends JFrame{
 		c= 0;
 		for(i=-3;i<=3;i++){
 			c = compte(lastX,(lastY+i),c,joueur);
-			//System.out.println("DIRECTION 2["+(lastX)+","+(lastY+i)+"]="+getCase(lastX,lastY+i)+"|c="+c);
 			if(c==4)
 				break;
 		}
@@ -88,7 +123,6 @@ class Plateau extends JFrame{
 		c= 0;
 		for(i=-3;i<=3;i++){
 			c = compte(lastX+i,lastY+i,c,joueur);
-			//System.out.println("DIRECTION 3["+(lastX+i)+","+(lastY+i)+"]="+getCase(lastX+i,lastY+i)+"|c="+c);
 			if(c==4)
 				break;
 		}
@@ -99,7 +133,6 @@ class Plateau extends JFrame{
 		c= 0;
 		for(i=-3;i<=3;i++){
 			c = compte(lastX+i,lastY-i,c,joueur);
-			//System.out.println("DIRECTION 4["+(lastX+i)+","+(lastY-i)+"]="+getCase(lastX,lastY-i)+"|c="+c);
 			if(c==4)
 				break;
 		}
@@ -128,6 +161,9 @@ class Plateau extends JFrame{
 	int lastX,lastY;// Y:ligne et X:colonne
 	int tour; 	// 1 ou 2
 	int n,m;
-	private Case[][] tab;
+	Case[][] tab;
 	JPanel background;
+	JPanel gamePane;
+	JPanel menuPane;
+	bouttonJoue[] playingButtons;
 }

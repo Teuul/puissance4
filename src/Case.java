@@ -28,7 +28,7 @@ public class Case extends JPanel {
         else if (color == 2)
             paintComponent(getGraphics(),Color.YELLOW);
         else
-            getGraphics().setColor(Color.LIGHT_GRAY);
+            paintComponent(getGraphics(),Color.LIGHT_GRAY);
     }
 
     int color;  // 0:vide ; 1:rouge ; 2:jaune
