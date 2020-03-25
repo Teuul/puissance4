@@ -5,8 +5,10 @@ import java.awt.event.ActionListener;
 
 public class bouttonJoue extends JButton {
 
-    public bouttonJoue(int m,Plateau P){
+    public bouttonJoue(int m,Plateau P,Bot B){
+        this.p = P;
         this.col = m;
+        this.B = B;
         this.playable =  true;
         setBackground(Color.LIGHT_GRAY);
         addActionListener(new ActionListener() {
@@ -18,6 +20,8 @@ public class bouttonJoue extends JButton {
                 } catch (ErrGagne err) {
                     //System.out.println("Le jeu continue.");
                 }
+                if(getPlayable()==true)
+                    B.play();
             }
         });
     }
@@ -32,5 +36,6 @@ public class bouttonJoue extends JButton {
 
     int col;
     Plateau p;
+    Bot B;
     private boolean playable;
 }

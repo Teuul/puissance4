@@ -9,6 +9,7 @@ class Plateau extends JFrame{
 		this.n = n;
 		this.m = m;
 		tour = 1;
+		Bot B = new Bot(this);
 		background = new JPanel();
 		gamePane = new JPanel();
 		menuPane = new JPanel();
@@ -48,7 +49,7 @@ class Plateau extends JFrame{
 		gamePane.setLayout(new GridLayout(n+1,m));
 		playingButtons = new bouttonJoue[m];
 		for(int k =0;k<m;k++){
-			playingButtons[k] = new bouttonJoue(k,this);
+			playingButtons[k] = new bouttonJoue(k,this,B);
 			gamePane.add(playingButtons[k]);
 		}
 		gamePane.setBackground(Color.DARK_GRAY);
@@ -69,11 +70,11 @@ class Plateau extends JFrame{
 				System.out.print(tab[i][j].getColor()+"|");
 			}
 			System.out.println();
-			System.out.print("-");
-			for(int j=0;j<7;j++){
+			//System.out.print("-");
+			/*for(int j=0;j<7;j++){
 				System.out.print("--");
-			}
-			System.out.println();
+			}*/
+			//System.out.println();
 		}
 	}
 
@@ -106,6 +107,7 @@ class Plateau extends JFrame{
 	int gagne(int joueur) throws ErrGagne{
 		int i;
 		//direction 1
+		//System.out.println("["+lastX+","+lastY+"]");
 		int c= 0;
 		for(i=-3;i<=3;i++){
 			c = compte(lastX+i,lastY,c,joueur);
@@ -114,7 +116,7 @@ class Plateau extends JFrame{
 		}
 		if(c==4)
 			return joueur;
-
+		//System.out.println("Count:"+c);
 		//direction 2
 		c= 0;
 		for(i=-3;i<=3;i++){
@@ -124,7 +126,7 @@ class Plateau extends JFrame{
 		}
 		if(c==4)
 			return joueur;
-
+		//System.out.println("Count:"+c);
 		//direction 3
 		c= 0;
 		for(i=-3;i<=3;i++){
@@ -134,7 +136,7 @@ class Plateau extends JFrame{
 		}
 		if(c==4)
 			return joueur;
-
+		//System.out.println("Count:"+c);
 		//direction 4
 		c= 0;
 		for(i=-3;i<=3;i++){
@@ -144,6 +146,7 @@ class Plateau extends JFrame{
 		}
 		if(c==4)
 			return joueur;
+		//System.out.println("Count:"+c);
 		throw new ErrGagne(joueur);
 	}
 
