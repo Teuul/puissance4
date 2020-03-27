@@ -9,6 +9,8 @@ public class Bot{
         int[][] grid = Case.colorGrid(P.n,P.m,P.tab);
         //int column = chooseGreedy(P.n,P.m,P.tab);
         int column = chooseMinmax(P.n,P.m,grid);
+        //int column = chooseAlphaBeta(P.n,P.m,grid);
+
         try {
             P.joue(column);
         }
@@ -100,7 +102,7 @@ public class Bot{
             if(i!=-1) {
                 grid[i][j] = 2;
                 int[][] newGrid = Case.copy(n,m,grid);
-                score = scoreMinmax(k,n,m,newGrid,depth-1,1);
+                score = scoreMinmax(n,m,newGrid,depth-1,1);
                 System.out.println("["+i+","+j+"] | Depth:"+ depth +" | Mean:" + score);
                 if (bestScore< score){
                     kbest = new int[m];
@@ -118,7 +120,7 @@ public class Bot{
         return kbest[(int)(lenKbest*Math.random())];
     }
 
-    public double scoreMinmax(int col,int n,int m,int[][] grid,int depth,int joueur){
+    public double scoreMinmax(int n,int m,int[][] grid,int depth,int joueur){
         if(depth == 0 || gridIsfull(n,m,grid)){
             int[][]values = gridValues(n,m,grid);
             return gridMean(n,m,values);
@@ -132,13 +134,10 @@ public class Bot{
                 i = available(k,n,grid);
                 if(i!=-1) {
                     grid[i][j] = 2;
-                    //int[][] values = gridValues(n,m,grid);
                     int [][] newGrid = Case.copy(n,m,grid);
                     //printGrid(n,m,grid);
-                    mean = scoreMinmax(k,n,m,newGrid,depth-1,1);
-                    //System.out.println("Depth:"+ depth +"| Mean:" + mean);
+                    mean = scoreMinmax(n,m,newGrid,depth-1,1);
                     if (maxMean < mean){
-                        kmax = k;
                         maxMean = mean;
                     }
                     grid[i][j] = 0;
@@ -154,15 +153,99 @@ public class Bot{
                 j = k;
                 i = available(j,n,grid);
                 if(i!=-1) {
-                    grid[i][j] = 2;
+                    grid[i][j] = 1;
                     int[][] newGrid = Case.copy(n,m,grid);
                     //printGrid(n,m,newGrid);
-                    mean = scoreMinmax(k,n,m,newGrid,depth-1,2);
-                    //System.out.println("Depth:"+ depth +"| Mean:" + mean);
+                    mean = scoreMinmax(n,m,newGrid,depth-1,2);
                     if (minMean > mean){
-                        kmin = k;
                         minMean = mean;
                     }
+                    grid[i][j] = 0;
+                }
+            }
+            return minMean;
+        }
+    }
+
+    public int chooseAlphaBeta(int n,int m,int[][] grid){
+        double bestScore = -100000;
+        double score;
+        int depth = 7;
+        int[] kbest = new int[m];
+        int lenKbest = 0;
+        int i,j;
+        double alpha,beta;
+        for(int k=0;k<m;k++){
+            j = k;
+            i = available(k,n,grid);
+            if(i!=-1) {
+                grid[i][j] = 2;
+                int[][] newGrid = Case.copy(n,m,grid);
+                alpha = -100000;
+                beta = 100000;
+                score = scoreAlphaBeta(n,m,newGrid,depth-1,1,alpha,beta);
+                System.out.println("["+i+","+j+"] | Depth:"+ depth +" | Mean:" + score);
+                System.out.println("A: "+ alpha +" |B: "+ beta);
+                if (bestScore< score){
+                    kbest = new int[m];
+                    kbest[0] = k;
+                    lenKbest = 1;
+                    bestScore = score;
+                }
+                else if(bestScore == score){
+                    kbest[lenKbest] = k;
+                    lenKbest++;
+                }
+                grid[i][j] = 0;
+            }
+        }
+        return kbest[(int)(lenKbest*Math.random())];
+    }
+
+    public double scoreAlphaBeta(int n,int m,int[][] grid,int depth,int joueur,double alpha,double beta){
+        if(depth == 0 || gridIsfull(n,m,grid)){
+            int[][]values = gridValues(n,m,grid);
+            return gridMean(n,m,values);
+        }
+        else if(joueur == 2){       // maximizing --> bot
+            double maxMean=-100000,mean;
+            int i,j;
+            for(int k=0;k<m;k++){
+                j = k;
+                i = available(k,n,grid);
+                if(i!=-1) {
+                    grid[i][j] = 2;
+                    int [][] newGrid = Case.copy(n,m,grid);
+                    //printGrid(n,m,grid);
+                    mean = scoreAlphaBeta(n,m,newGrid,depth-1,1,alpha,beta);
+                    if (maxMean < mean){
+                        maxMean = mean;
+                    }
+                    alpha = Math.max(alpha,mean);
+                    if(alpha>=beta)
+                        break;
+                    grid[i][j] = 0;
+                }
+            }
+            return maxMean;
+        }
+        else{                       // minimizing --> player
+            double minMean = 100000,mean;
+            int i,j;
+            for(int k=0;k<m;k++){
+                j = k;
+                i = available(j,n,grid);
+                if(i!=-1) {
+                    grid[i][j] = 2; // grid[i][j] = 1; ???
+                    int[][] newGrid = Case.copy(n,m,grid);
+                    //printGrid(n,m,newGrid);
+                    mean = scoreAlphaBeta(n,m,newGrid,depth-1,2,alpha,beta);
+                    if (minMean > mean){
+                        minMean = mean;
+                    }
+                    beta = Math.min(beta,mean);
+                    if(alpha>=beta)
+                        break;
                     grid[i][j] = 0;
                 }
             }
