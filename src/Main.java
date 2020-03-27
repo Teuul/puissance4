@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 class Main {
 	static public void main(String args[]) throws ErrGagne {
 		Plateau P = new Plateau(6, 7);

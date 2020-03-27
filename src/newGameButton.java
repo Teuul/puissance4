@@ -1,5 +1,3 @@
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -29,6 +27,7 @@ public class newGameButton extends JButton {
         for(int k = 0;k<P.m;k++){
             P.playingButtons[k].setPlayable(true);
         }
+        P.tour = 1;
     }
 
     Plateau P;

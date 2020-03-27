@@ -42,7 +42,7 @@ class Plateau extends JFrame{
 		});
 		menuPane.add(quitButton);
 		// restart button
-		JButton restartButton = new newGameButton(this);
+		restartButton = new newGameButton(this);
 		menuPane.add(restartButton);
 
 		gamePane.setPreferredSize(new Dimension(450,300));
@@ -105,6 +105,15 @@ class Plateau extends JFrame{
 	}
 
 	int gagne(int joueur) throws ErrGagne{
+		int s=0;
+		for(int k = 0;k<n;k++){
+			for(Case c:tab[k]){
+				if(c.getColor()!=0)
+					s+=1;
+			}
+		}
+		if(s==n*m)
+			throw new ErrGagne(3,this);
 		int i;
 		//direction 1
 		//System.out.println("["+lastX+","+lastY+"]");
@@ -147,7 +156,7 @@ class Plateau extends JFrame{
 		if(c==4)
 			return joueur;
 		//System.out.println("Count:"+c);
-		throw new ErrGagne(joueur);
+		throw new ErrGagne(joueur,this);
 	}
 
 	int compte(int x,int y,int c,int joueur){
@@ -174,5 +183,6 @@ class Plateau extends JFrame{
 	JPanel background;
 	JPanel gamePane;
 	JPanel menuPane;
+	newGameButton restartButton;
 	bouttonJoue[] playingButtons;
 }
