@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Bot extends Thread{
     public Bot(Plateau P){
         this.P = P;
@@ -189,7 +191,23 @@ public class Bot extends Thread{
         int lenKbest = 0;
         int i,j;
         double alpha,beta;
-        for(int k=0;k<m;k++){
+
+        ArrayList<Integer> columns = new ArrayList<Integer>();
+        ArrayList<Double> scores = new ArrayList<Double>();
+        int kmem;
+        for(int k =0;k<m;k++){
+            j = k;
+            i = available(k,n,grid);
+            if(i!=-1) {
+                grid[i][j] = 2;
+                int[][] values = gridValues(n,m,grid);
+                score = gridMean(n,m,grid);
+                insert(columns,scores,k,score);
+                grid[i][j] = 0;
+            }
+        }
+        bestScore = -100000;
+        for(int k: columns){
             j = k;
             i = available(k,n,grid);
             if(i!=-1) {
@@ -344,6 +362,18 @@ public class Bot extends Thread{
             }
         }
         return sum==n*m;
+    }
+
+    public void insert(ArrayList<Integer> I,ArrayList<Double> D,int l,double score){
+        for(int k = 0;k<l;k++){
+            if(D.get(k)<score) {
+                D.add(k, score);
+                I.add(k, l);
+                return;
+            }
+        }
+        D.add(l,score);
+        I.add(l,l);
     }
 
 

@@ -85,12 +85,7 @@ class Plateau extends JFrame{
 		}
 		if(iter>=0) {
 			// descente du jeton
-			System.out.println("test A: "+tab[5][3].getColor());
-			System.out.println("test B: "+tab[4][3].getColor());
 			tab[iter][j].setColorValue(tour);
-			System.out.println("test A: "+tab[5][3].getColor());
-			System.out.println("test B: "+tab[4][3].getColor());
-			System.out.println();
 			Descente d;
 			if(tour == 1)
 				 d = new Descente(iter,j,tab,n,1);
