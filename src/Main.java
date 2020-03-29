@@ -4,5 +4,4 @@ class Main {
 		P.setSize(600, 400);
 		P.setVisible(true);
 	}
-	// Make Plateau and Bot thread and start them in main
 }

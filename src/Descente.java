@@ -12,7 +12,7 @@ public class Descente extends Thread{
             // descente du jeton
             grille[iter][j].setColorDescente(tour);
             if(iter!=0)
-                grille[iter-1][j].setColorDescente(0); // remettre à gris celle d'avant
+                grille[iter-1][j].setColorDescente(grille[iter-1][j].getColor()); // remettre à gris celle d'avant
             try {
                 sleep(80);
                 iter++;
@@ -25,7 +25,6 @@ public class Descente extends Thread{
         } catch (InterruptedException e) {}
         if(iter!=0)
             grille[iter-1][j].setColorDescente(grille[iter-1][j].getColor()); // remettre à gris celle d'avant
-        //grille[iter][j].setColor(tour);
         grille[iter][j].setColorDescente(tour);
         interrupt();
     }

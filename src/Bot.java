@@ -34,7 +34,6 @@ public class Bot extends Thread{
             cY = compte(i+k,j,cY,2,n,m,tab); maxYellow = Math.max(maxYellow,cY);
             if(cR == 4 || cY == 4)
                 return 1000;
-            //System.out.println("("+cR+","+cY+")");
         }
         //direction 2
         cR = 0;
@@ -151,7 +150,6 @@ public class Bot extends Thread{
                 if(i!=-1) {
                     grid[i][j] = 2;
                     int [][] newGrid = Case.copy(n,m,grid);
-                    //printGrid(n,m,grid);
                     mean = scoreMinmax(n,m,newGrid,depth-1,1);
                     if (maxMean < mean){
                         maxMean = mean;
@@ -163,7 +161,6 @@ public class Bot extends Thread{
         }
         else{                       // minimizing --> player
             double minMean = 100000,mean;
-            int kmin = 0;
             int i,j;
             for(int k=0;k<m;k++){
                 j = k;
@@ -171,7 +168,6 @@ public class Bot extends Thread{
                 if(i!=-1) {
                     grid[i][j] = 1;
                     int[][] newGrid = Case.copy(n,m,grid);
-                    //printGrid(n,m,newGrid);
                     mean = scoreMinmax(n,m,newGrid,depth-1,2);
                     if (minMean > mean){
                         minMean = mean;
@@ -194,14 +190,13 @@ public class Bot extends Thread{
 
         ArrayList<Integer> columns = new ArrayList<Integer>();
         ArrayList<Double> scores = new ArrayList<Double>();
-        int kmem;
         for(int k =0;k<m;k++){
             j = k;
             i = available(k,n,grid);
             if(i!=-1) {
                 grid[i][j] = 2;
                 int[][] values = gridValues(n,m,grid);
-                score = gridMean(n,m,grid);
+                score = gridMean(n,m,values);
                 insert(columns,scores,k,score);
                 grid[i][j] = 0;
             }
@@ -248,13 +243,11 @@ public class Bot extends Thread{
                 if(i!=-1) {
                     grid[i][j] = 2;
                     int [][] newGrid = Case.copy(n,m,grid);
-                    //printGrid(n,m,grid);
                     mean = scoreAlphaBeta(n,m,newGrid,depth-1,1,alpha,beta);
                     if (maxMean < mean){
                         maxMean = mean;
                     }
                     alpha = Math.max(alpha,mean);
-                    //System.out.println("A: "+ alpha +" |B: "+ beta);
                     if(alpha>=beta)
                         break;
                     grid[i][j] = 0;
@@ -271,13 +264,11 @@ public class Bot extends Thread{
                 if(i!=-1) {
                     grid[i][j] = 2; // grid[i][j] = 1; ???
                     int[][] newGrid = Case.copy(n,m,grid);
-                    //printGrid(n,m,newGrid);
                     mean = scoreAlphaBeta(n,m,newGrid,depth-1,2,alpha,beta);
                     if (minMean > mean){
                         minMean = mean;
                     }
                     beta = Math.min(beta,mean);
-                    //System.out.println("A: "+ alpha +" |B: "+ beta);
                     if(alpha>=beta)
                         break;
                     grid[i][j] = 0;
@@ -305,8 +296,8 @@ public class Bot extends Thread{
 
     public int[][] gridValues(int n,int m,int[][] grid){
         int [][] res = new int[n][m];
-        for(int i = 0;i<P.n;i++){
-            for(int j = 0;j<P.m;j++){
+        for(int i = 0;i<n;i++){
+            for(int j = 0;j<m;j++){
                 res[i][j] = valeur(i,j,n,m,grid);
             }
         }
@@ -327,13 +318,13 @@ public class Bot extends Thread{
         return sum/nb;
     }
 
-    int compte(int x,int y,int c,int joueur,int n,int m,int[][] tab){
+    public int compte(int x,int y,int c,int joueur,int n,int m,int[][] tab){
         if (getCellColor(x,y,n,m,tab) == joueur)
             return c + 1;
         return 0;
     }
 
-    int getCellColor(int x,int y,int n,int m,int[][] tab){
+    public int getCellColor(int x,int y,int n,int m,int[][] tab){
         if(0<=x && x<m){
             if(0<=y && y<n){
                 return tab[y][x];

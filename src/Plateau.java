@@ -70,11 +70,6 @@ class Plateau extends JFrame{
 				System.out.print(tab[i][j].getColor()+"|");
 			}
 			System.out.println();
-			//System.out.print("-");
-			/*for(int j=0;j<7;j++){
-				System.out.print("--");
-			}*/
-			//System.out.println();
 		}
 	}
 
@@ -131,7 +126,6 @@ class Plateau extends JFrame{
 			throw new ErrGagne(3,this);
 		int i;
 		//direction 1
-		//System.out.println("["+lastX+","+lastY+"]");
 		int c= 0;
 		for(i=-3;i<=3;i++){
 			c = compte(lastX+i,lastY,c,joueur);
@@ -140,7 +134,6 @@ class Plateau extends JFrame{
 		}
 		if(c==4)
 			return joueur;
-		//System.out.println("Count:"+c);
 		//direction 2
 		c= 0;
 		for(i=-3;i<=3;i++){
@@ -150,7 +143,6 @@ class Plateau extends JFrame{
 		}
 		if(c==4)
 			return joueur;
-		//System.out.println("Count:"+c);
 		//direction 3
 		c= 0;
 		for(i=-3;i<=3;i++){
@@ -160,7 +152,6 @@ class Plateau extends JFrame{
 		}
 		if(c==4)
 			return joueur;
-		//System.out.println("Count:"+c);
 		//direction 4
 		c= 0;
 		for(i=-3;i<=3;i++){
@@ -170,7 +161,6 @@ class Plateau extends JFrame{
 		}
 		if(c==4)
 			return joueur;
-		//System.out.println("Count:"+c);
 		throw new ErrGagne(joueur,this);
 	}
 
