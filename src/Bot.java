@@ -75,24 +75,30 @@ public class Bot extends Thread{
 
     public int chooseGreedy(int n,int m,Case[][] tab){
         int[][] grid = Case.colorGrid(n,m,tab);
-        valeurs = gridValues(n,m,grid);
-        printGrid(n,m,valeurs);
-
         int[] xmem = new int [m];
         int lenMem = 0;
-        int maxval = 0;
+        double maxval =  -10000;
+        int[][] values;
+        double mean;
+        int i;
+
         for(int k = 0;k<m;k++){
             if(available(k,n,tab)!=-1) {
-                if (maxval < valeurs[available(k, n, tab)][k]) {
+                i = available(k, n, tab);
+                grid[i][k] = 2;
+                values= gridValues(n,m,grid);
+                mean = gridMean(n,m,values);
+                if(maxval < mean){
                     xmem = new int[m];
                     xmem[0] = k;
                     lenMem = 1;
-                    maxval = valeurs[available(k, n, tab)][k];
+                    maxval = mean;
                 }
-                else if(maxval == valeurs[available(k, n, tab)][k]){
+                else{
                     xmem[lenMem] = k;
                     lenMem++;
                 }
+                grid[i][k] = 0;
             }
         }
         return xmem[(int)(lenMem*Math.random())];
@@ -102,7 +108,6 @@ public class Bot extends Thread{
         double bestScore = -100000;
         double score;
         int depth = 7; // up to the user
-        //int kbest = 0;
         int[] kbest = new int[m];
         int lenKbest = 0;
         int i,j;
@@ -137,7 +142,6 @@ public class Bot extends Thread{
         }
         else if(joueur == 2){       // maximizing --> bot
             double maxMean=-100000,mean;
-            int kmax = 0;
             int i,j;
             for(int k=0;k<m;k++){
                 j = k;
@@ -180,7 +184,7 @@ public class Bot extends Thread{
     public int chooseAlphaBeta(int n,int m,int[][] grid){
         double bestScore = -100000;
         double score;
-        int depth = 10;
+        int depth = 7;
         int[] kbest = new int[m];
         int lenKbest = 0;
         int i,j;
@@ -294,14 +298,12 @@ public class Bot extends Thread{
     public double gridMean(int n,int m,int[][] tab){    // modified "mean"
         double sum = 0;
         double nb = 0;
-        //System.out.println("#### CALCUL MOYENNE ####");
         for(int i = 0;i<n;i++){
             for(int j = 0;j<m;j++){
                 if(tab[i][j]!=0) {
                     sum += tab[i][j];
                     nb++;
                 }
-                //System.out.println("S="+sum);
             }
         }
         return sum/nb;

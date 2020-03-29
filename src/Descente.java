@@ -20,9 +20,13 @@ public class Descente extends Thread{
 
             }
         }
+        try {
+            sleep(80);
+        } catch (InterruptedException e) {}
         if(iter!=0)
-            grille[iter-1][j].setColorDescente(0); // remettre à gris celle d'avant
-        grille[iter][j].setColor(tour);
+            grille[iter-1][j].setColorDescente(grille[iter-1][j].getColor()); // remettre à gris celle d'avant
+        //grille[iter][j].setColor(tour);
+        grille[iter][j].setColorDescente(tour);
         interrupt();
     }
 

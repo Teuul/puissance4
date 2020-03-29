@@ -1,5 +1,3 @@
-import java.lang.management.PlatformLoggingMXBean;
-
 public class ErrGagne extends Exception {
     public ErrGagne(int code,Plateau P){
         this.code = code;
