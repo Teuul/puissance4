@@ -1,15 +1,15 @@
-public class Bot{
+public class Bot extends Thread{
     public Bot(Plateau P){
         this.P = P;
         this.valeurs = new int[P.n][P.m];
     }
 
-    public void play(){ // remplacer par un thread
-        //int column = chooseRandom(P.m,P.n,P.tab);
+    public void run(){
         int[][] grid = Case.colorGrid(P.n,P.m,P.tab);
+        //int column = chooseRandom(P.m,P.n,P.tab);
         //int column = chooseGreedy(P.n,P.m,P.tab);
-        int column = chooseMinmax(P.n,P.m,grid);
-        //int column = chooseAlphaBeta(P.n,P.m,grid);
+        //int column = chooseMinmax(P.n,P.m,grid);
+        int column = chooseAlphaBeta(P.n,P.m,grid);
 
         try {
             P.joue(column);
@@ -17,6 +17,7 @@ public class Bot{
         catch(ErrGagne e){
             //System.out.println("Bot has not won");
         }
+        interrupt();
     }
 
     public int valeur(int j,int i,int n,int m,int[][] tab){
@@ -29,6 +30,8 @@ public class Bot{
         for(k=-3;k<=3;k++){
             cR = compte(i+k,j,cR,1,n,m,tab); maxRed = Math.max(maxRed,cR);
             cY = compte(i+k,j,cY,2,n,m,tab); maxYellow = Math.max(maxYellow,cY);
+            if(cR == 4 || cY == 4)
+                return 1000;
             //System.out.println("("+cR+","+cY+")");
         }
         //direction 2
@@ -37,13 +40,18 @@ public class Bot{
         for(k=-3;k<=3;k++){
             cR = compte(i,j+k,cR,1,n,m,tab); maxRed = Math.max(maxRed,cR);
             cY = compte(i,j+k,cY,2,n,m,tab); maxYellow = Math.max(maxYellow,cY);
+            if(cR == 4 || cY == 4)
+                return 1000;
         }
+
         //direction 3
         cR = 0;
         cY = 0;
         for(k=-3;k<=3;k++){
             cR = compte(i+k,j+k,cR,1,n,m,tab); maxRed = Math.max(maxRed,cR);
             cY = compte(i+k,j+k,cY,2,n,m,tab); maxYellow = Math.max(maxYellow,cY);
+            if(cR == 4 || cY == 4)
+                return 1000;
         }
         //direction 4
         cR = 0;
@@ -51,6 +59,8 @@ public class Bot{
         for(k=-3;k<=3;k++){
             cR = compte(i+k,j-k,cR,1,n,m,tab); maxRed = Math.max(maxRed,cR);
             cY = compte(i+k,j-k,cY,2,n,m,tab); maxYellow = Math.max(maxYellow,cY);
+            if(cR == 4 || cY == 4)
+                return 1000;
         }
         return maxYellow-maxRed;
         //return Math.max(maxYellow,maxRed);
@@ -63,7 +73,7 @@ public class Bot{
         return res;
     }
 
-    public int chooseGreedy(int n,int m,Case[][] tab){ // GREEDY ALGORITHM
+    public int chooseGreedy(int n,int m,Case[][] tab){
         int[][] grid = Case.colorGrid(n,m,tab);
         valeurs = gridValues(n,m,grid);
         printGrid(n,m,valeurs);
@@ -170,7 +180,7 @@ public class Bot{
     public int chooseAlphaBeta(int n,int m,int[][] grid){
         double bestScore = -100000;
         double score;
-        int depth = 7;
+        int depth = 10;
         int[] kbest = new int[m];
         int lenKbest = 0;
         int i,j;
@@ -185,7 +195,7 @@ public class Bot{
                 beta = 100000;
                 score = scoreAlphaBeta(n,m,newGrid,depth-1,1,alpha,beta);
                 System.out.println("["+i+","+j+"] | Depth:"+ depth +" | Mean:" + score);
-                System.out.println("A: "+ alpha +" |B: "+ beta);
+                //System.out.println("A: "+ alpha +" |B: "+ beta);
                 if (bestScore< score){
                     kbest = new int[m];
                     kbest[0] = k;
@@ -222,6 +232,7 @@ public class Bot{
                         maxMean = mean;
                     }
                     alpha = Math.max(alpha,mean);
+                    //System.out.println("A: "+ alpha +" |B: "+ beta);
                     if(alpha>=beta)
                         break;
                     grid[i][j] = 0;
@@ -244,6 +255,7 @@ public class Bot{
                         minMean = mean;
                     }
                     beta = Math.min(beta,mean);
+                    //System.out.println("A: "+ alpha +" |B: "+ beta);
                     if(alpha>=beta)
                         break;
                     grid[i][j] = 0;

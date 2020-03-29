@@ -85,18 +85,29 @@ class Plateau extends JFrame{
 		}
 		if(iter>=0) {
 			// descente du jeton
+			tab[iter][j].setColorValue(tour);
 			Descente d = new Descente(iter,j,tab,n,tour);
-			d.run();
-			tab[iter][j].setColor(tour);
+			d.start();
 			this.lastX = j;
 			this.lastY = iter;
 			int test_winner = tour;
-			if (this.tour == 1)
+			if (this.tour == 1) {
+				for(int k = 0;k<m;k++){
+					playingButtons[k].setPlayable(false);
+					playingButtons[k].setBotplayable(true);
+				}
 				this.tour = 2;
-			else
+			}
+			else {
+				for(int k = 0;k<m;k++){
+					playingButtons[k].setBotplayable(false);
+					playingButtons[k].setPlayable(true);
+				}
 				this.tour = 1;
+			}
 			System.out.println("Joueur " + gagne(test_winner) + " a gagné !");
 			for(int k = 0;k<m;k++){
+				playingButtons[k].setBotplayable(false);
 				playingButtons[k].setPlayable(false);
 			}
 			return test_winner;
@@ -175,6 +186,8 @@ class Plateau extends JFrame{
 		}
 		return null;
 	}
+
+
 
 	int lastX,lastY;// Y:ligne et X:colonne
 	int tour; 	// 1 ou 2

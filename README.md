@@ -1,2 +1,2 @@
-Compilation: javac *
-Execution: java Main
+Compilation: &nbsp;&nbsp;javac * \
+Execution: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;java Main

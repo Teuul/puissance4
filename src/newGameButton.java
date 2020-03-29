@@ -26,6 +26,7 @@ public class newGameButton extends JButton {
         }
         for(int k = 0;k<P.m;k++){
             P.playingButtons[k].setPlayable(true);
+            P.playingButtons[k].setBotplayable(false);
         }
         P.tour = 1;
     }

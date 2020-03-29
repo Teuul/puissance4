@@ -14,7 +14,7 @@ public class Descente extends Thread{
             if(iter!=0)
                 grille[iter-1][j].setColorDescente(0); // remettre à gris celle d'avant
             try {
-                sleep(40);
+                sleep(80);
                 iter++;
             } catch (InterruptedException e) {
 
@@ -22,6 +22,8 @@ public class Descente extends Thread{
         }
         if(iter!=0)
             grille[iter-1][j].setColorDescente(0); // remettre à gris celle d'avant
+        grille[iter][j].setColor(tour);
+        interrupt();
     }
 
     int i,j,h,tour;

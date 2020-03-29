@@ -50,6 +50,10 @@ public class Case extends JPanel {
             paintComponent(getGraphics(),Color.LIGHT_GRAY);
     }
 
+    public void setColorValue(int color){
+        this.color = color;
+    }
+
     static Case[][] copy(int n,int m,Case[][] grid){
         Case[][] res = new Case[n][m];
         for(int i = 0;i<n;i++){
